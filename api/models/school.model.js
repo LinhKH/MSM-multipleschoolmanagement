@@ -10,7 +10,7 @@ const schollSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    owner_name: {
+    owner_name: { // ten hieu truong
       type: String,
       required: true,
     },

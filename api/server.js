@@ -7,6 +7,8 @@ dotenv.config();
 
 import connectDB from "./config/connectDB.js";
 
+import schoolRouter from './routes/school.router.js';
+
 const app = express();
 app.use(
   cors({
@@ -22,6 +24,8 @@ app.use(morgan('tiny'));
 app.get('/test', (req, res) => {
   res.send('Hello World!');
 });
+
+app.use('/api/school', schoolRouter);
 
 const PORT = process.env.PORT || 5000;
 
