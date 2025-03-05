@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SchoolLayout from "./school/SchoolLayout";
+import Attendance from "./school/components/attendance/Attendance";
+import Dashboard from "./school/components/dashboard/Dashboard";
+import Class from "./school/components/class/Class";
+import Examinations from "./school/components/examinations/Examinations";
+import Notice from "./school/components/notice/Notice";
+import Schedule from "./school/components/schedule/Schedule";
+import Students from "./school/components/students/Students";
+import Subjects from "./school/components/subjects/Subjects";
+import Teachers from "./school/components/teachers/Teachers";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Routes>
+          {/* School route */}
+          <Route path="school" element={<SchoolLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="attendance" element={<Attendance />} />
+            <Route path="class" element={<Class />} />
+            <Route path="examinations" element={<Examinations />} />
+            <Route path="notice" element={<Notice />} />
+            <Route path="schedule" element={<Schedule />} />
+            <Route path="students" element={<Students />} />
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="teachers" element={<Teachers />} />
+
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

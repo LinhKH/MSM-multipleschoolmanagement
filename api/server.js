@@ -27,7 +27,7 @@ app.get('/test', (req, res) => {
 
 app.use('/api/school', schoolRouter);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 connectDB().then(() => {
   app.listen(PORT, () => {
