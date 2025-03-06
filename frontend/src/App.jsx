@@ -14,10 +14,17 @@ import Teachers from "./school/components/teachers/Teachers";
 // teacher routes
 import TeacherLayout from "./teacher/TeacherLayout";
 import AttendanceTeacher from "./teacher/components/attendance/AttendanceTeacher";
-import DashboardTeacher from "./teacher/components/dashboard/DashboardTeacher";
+import TeacherDetail from "./teacher/components/teacher_detail/TeacherDetail";
 import ExaminationsTeacher from "./teacher/components/examinations/ExaminationsTeacher";
 import NoticeTeacher from "./teacher/components/notice/NoticeTeacher";
 import ScheduleTeacher from "./teacher/components/schedule/ScheduleTeacher";
+// student routes
+import StudentLayout from "./student/StudentLayout";
+import AttendanceStudent from "./student/components/attendance/AttendanceStudent";
+import ExaminationsStudent from "./student/components/examinations/ExaminationsStudent";
+import NoticeStudent from "./student/components/notice/NoticeStudent";
+import ScheduleStudent from "./student/components/schedule/ScheduleStudent";
+import StudentDetail from "./student/components/student_detail/StudentDetail";
 
 // client routes
 import ClientLayout from "./client/ClientLayout";
@@ -44,11 +51,19 @@ function App() {
           </Route>
           {/* teacher route */}
           <Route path="teacher" element={<TeacherLayout />}>
-            <Route index element={<DashboardTeacher />} />
+            <Route index element={<TeacherDetail />} />
             <Route path="attendance" element={<AttendanceTeacher />} />
             <Route path="examinations" element={<ExaminationsTeacher />} />
             <Route path="notice" element={<NoticeTeacher />} />
             <Route path="schedule" element={<ScheduleTeacher />} />
+          </Route>
+          {/* student route */}
+          <Route path="student" element={<StudentLayout />}>
+            <Route index element={<StudentDetail />} />
+            <Route path="attendance" element={<AttendanceStudent />} />
+            <Route path="examinations" element={<ExaminationsStudent />} />
+            <Route path="notice" element={<NoticeStudent />} />
+            <Route path="schedule" element={<ScheduleStudent />} />
           </Route>
 
           {/* Client route */}
@@ -57,8 +72,6 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
-            
-
         </Routes>
       </BrowserRouter>
     </>

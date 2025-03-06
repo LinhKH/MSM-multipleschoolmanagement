@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from "path";
 dotenv.config();
 
 import connectDB from "./config/connectDB.js";
@@ -22,7 +23,7 @@ app.use(cookieParser());
 app.use(morgan('tiny'));
 
 app.get('/test', (req, res) => {
-  res.send('Hello World!');
+  res.send(path.resolve());
 });
 
 app.use('/api/school', schoolRouter);

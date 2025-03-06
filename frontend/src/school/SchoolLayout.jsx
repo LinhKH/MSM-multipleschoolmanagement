@@ -19,6 +19,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import HomeIcon from '@mui/icons-material/Home';
 
  // ICON
  import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
@@ -125,6 +126,11 @@ export default function SchoolLayout() {
   };
 
   const navArr = [
+    {
+      link: '/',
+      component: 'Home',
+      icon: HomeIcon,
+    },
     {
       link: '/school',
       component: 'Dashboard',
