@@ -15,8 +15,8 @@ const Login = () => {
   };
 
   const initialValues = {
-    email: "",
-    password: "",
+    email: "mr.linh1090@gmail.com",
+    password: "password",
   };
 
   const Formik = useFormik({
@@ -28,14 +28,15 @@ const Login = () => {
         formData.append(key, values[key]);
       });
       try {
-        const { data } = await axios.post(
+        const  response = await axios.post(
           "http://localhost:8000/api/school/login",
           formData
         );
 
+        console.log(response.headers.get("Authorization")); // undefined if not set in exposedHeaders: "Authorization" of cors server.js,
         Formik.resetForm();
 
-        setMessage(data.message);
+        setMessage(response.data.message);
         setMode("success");
       } catch (error) {
         console.log(error);
