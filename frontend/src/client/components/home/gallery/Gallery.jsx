@@ -39,7 +39,6 @@ export default function Gallery() {
           "http://localhost:8000/api/school/all"
         );
 
-        console.log(response);
         setSchools(response.data.schools);
       } catch (error) {
         console.error("Error:", error);

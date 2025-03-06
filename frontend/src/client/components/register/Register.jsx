@@ -18,7 +18,7 @@ const Register = () => {
 
   const [message, setMessage] = useState("");
   const [mode, setMode] = useState("");
-
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const handleClose = () => {
     setMessage(null);
   };
@@ -48,7 +48,7 @@ const Register = () => {
         formData.append("image", file);
         try {
           const { data } = await axios.post(
-            "http://localhost:8000/api/school/register",
+            `${backendUrl}/school/register`,
             formData
           );
 

@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 
 import loginSchema from "../../../yupSchema/loginSchema";
 import axios from "axios";
 import MessageSnackbar from "../../../basic_utility_components/snackbar/MessageSnackbar";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Login = () => {
   const [message, setMessage] = useState("");
   const [mode, setMode] = useState("");
+  const navigate = useNavigate();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleClose = () => {
     setMessage(null);
@@ -28,8 +32,8 @@ const Login = () => {
         formData.append(key, values[key]);
       });
       try {
-        const  response = await axios.post(
-          "http://localhost:8000/api/school/login",
+        const response = await axios.post(
+          `${backendUrl}/school/login`,
           formData
         );
 
@@ -46,6 +50,7 @@ const Login = () => {
 
         setMessage(response.data.message);
         setMode("success");
+        navigate("/school");
       } catch (error) {
         console.log(error);
         setMessage(error.response.data.message);

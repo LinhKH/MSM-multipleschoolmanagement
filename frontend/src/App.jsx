@@ -31,6 +31,7 @@ import ClientLayout from "./client/ClientLayout";
 import Home from "./client/components/home/Home";
 import Login from "./client/components/login/Login";
 import Register from "./client/components/register/Register";
+import ProtectedRoute from "./guard/ProtectedRoute";
 
 function App() {
   return (
@@ -38,7 +39,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* School route */}
-          <Route path="school" element={<SchoolLayout />}>
+          <Route
+            path="school"
+            element={
+              <ProtectedRoute allowedRoles={["SCHOOL"]}>
+                <SchoolLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="attendance" element={<Attendance />} />
             <Route path="class" element={<Class />} />
@@ -50,7 +58,14 @@ function App() {
             <Route path="teachers" element={<Teachers />} />
           </Route>
           {/* teacher route */}
-          <Route path="teacher" element={<TeacherLayout />}>
+          <Route
+            path="teacher"
+            element={
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <TeacherLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<TeacherDetail />} />
             <Route path="attendance" element={<AttendanceTeacher />} />
             <Route path="examinations" element={<ExaminationsTeacher />} />
@@ -58,7 +73,14 @@ function App() {
             <Route path="schedule" element={<ScheduleTeacher />} />
           </Route>
           {/* student route */}
-          <Route path="student" element={<StudentLayout />}>
+          <Route
+            path="student"
+            element={
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
+                <StudentLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<StudentDetail />} />
             <Route path="attendance" element={<AttendanceStudent />} />
             <Route path="examinations" element={<ExaminationsStudent />} />
