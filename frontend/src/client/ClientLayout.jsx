@@ -8,7 +8,7 @@ const ClientLayout = () => {
   return (
     <div>
       <Navbar />
-      <Box sx={{ minHeight: '80vh' }} component={'div'}>
+      <Box sx={{ minHeight: '80vh', alignItems: "center", }} component={'div'}>
         <Outlet />
       </Box>
       <Footer />

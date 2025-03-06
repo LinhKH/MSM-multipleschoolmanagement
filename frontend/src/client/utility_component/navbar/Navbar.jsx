@@ -15,7 +15,6 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
 const pages = [
-  { component: 'Home', link: '/' },
   { component: 'Login', link: '/login' },
   { component: 'Register', link: '/register' }
 ];
@@ -38,6 +37,10 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
+  const handleCloseMenu = () => {
+    setAnchorElNav(null);
+  };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -51,7 +54,6 @@ function Navbar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -60,7 +62,9 @@ function Navbar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor: 'pointer',
             }}
+            onClick={() => navigate('/')}
           >
             SMS
           </Typography>
@@ -89,7 +93,7 @@ function Navbar() {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={handleCloseMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page, i) => (
@@ -104,7 +108,6 @@ function Navbar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -114,11 +117,13 @@ function Navbar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor: 'pointer',
             }}
+            onClick={() => navigate('/')}
           >
             SMS
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             {pages.map((page, i) => (
               <Button
                 key={i}

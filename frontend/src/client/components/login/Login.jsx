@@ -34,6 +34,14 @@ const Login = () => {
         );
 
         console.log(response.headers.get("Authorization")); // undefined if not set in exposedHeaders: "Authorization" of cors server.js,
+        const token = response.headers.get("Authorization");
+        if (token) {
+          localStorage.setItem("token", token);
+        }
+        const user = response.data.user;
+        if (user) {
+          localStorage.setItem("user", JSON.stringify(user));
+        }
         Formik.resetForm();
 
         setMessage(response.data.message);
