@@ -111,7 +111,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function SchoolLayout() {
+export default function TeacherLayout() {
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -126,47 +126,27 @@ export default function SchoolLayout() {
 
   const navArr = [
     {
-      link: '/school',
-      component: 'Dashboard',
+      link: '/teacher',
+      component: 'DashboardTeacher',
       icon: DashboardCustomizeIcon,
     },
     {
-      link: '/school/class',
-      component: 'Class',
-      icon: FormatListNumberedIcon,
-    },
-    {
-      link: '/school/subjects',
-      component: 'Subjects',
-      icon: SubjectIcon,
-    },
-    {
-      link: '/school/students',
-      component: 'Students',
-      icon: PersonOutlineIcon,
-    },
-    {
-      link: '/school/teachers',
-      component: 'Teachers',
-      icon: PeopleAltIcon,
-    },
-    {
-      link: '/school/schedule',
+      link: '/teacher/schedule',
       component: 'Schedule',
       icon: EventIcon,
     },
     {
-      link: '/school/attendance',
+      link: '/teacher/attendance',
       component: 'Attendance',
       icon: RecentActorsIcon,
     },
     {
-      link: '/school/examinations',
+      link: '/teacher/examinations',
       component: 'Examinations',
       icon: ExplicitIcon,
     },
     {
-      link: '/school/notice',
+      link: '/teacher/notice',
       component: 'Notice',
       icon: NotificationsIcon,
     },
