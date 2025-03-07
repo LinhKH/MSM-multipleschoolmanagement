@@ -1,74 +1,74 @@
-import * as React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import HomeIcon from '@mui/icons-material/Home';
+import * as React from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import HomeIcon from "@mui/icons-material/Home";
 
- // ICON
- import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
- import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
- import SubjectIcon from '@mui/icons-material/Subject';
- import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
- import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
- import EventIcon from '@mui/icons-material/Event';
- import RecentActorsIcon from '@mui/icons-material/RecentActors';
- import ExplicitIcon from '@mui/icons-material/Explicit';
- import NotificationsIcon from '@mui/icons-material/Notifications';
+// ICON
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import SubjectIcon from "@mui/icons-material/Subject";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import EventIcon from "@mui/icons-material/Event";
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
+import ExplicitIcon from "@mui/icons-material/Explicit";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
@@ -78,7 +78,7 @@ const AppBar = styled(MuiAppBar, {
       style: {
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
+        transition: theme.transitions.create(["width", "margin"], {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.enteringScreen,
         }),
@@ -87,35 +87,36 @@ const AppBar = styled(MuiAppBar, {
   ],
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    variants: [
-      {
-        props: ({ open }) => open,
-        style: {
-          ...openedMixin(theme),
-          '& .MuiDrawer-paper': openedMixin(theme),
-        },
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  variants: [
+    {
+      props: ({ open }) => open,
+      style: {
+        ...openedMixin(theme),
+        "& .MuiDrawer-paper": openedMixin(theme),
       },
-      {
-        props: ({ open }) => !open,
-        style: {
-          ...closedMixin(theme),
-          '& .MuiDrawer-paper': closedMixin(theme),
-        },
+    },
+    {
+      props: ({ open }) => !open,
+      style: {
+        ...closedMixin(theme),
+        "& .MuiDrawer-paper": closedMixin(theme),
       },
-    ],
-  }),
-);
+    },
+  ],
+}));
 
 export default function SchoolLayout() {
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const location = useLocation();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -127,59 +128,63 @@ export default function SchoolLayout() {
 
   const navArr = [
     {
-      link: '/',
-      component: 'Home',
+      link: "/",
+      component: "Home",
       icon: HomeIcon,
     },
     {
-      link: '/school',
-      component: 'Dashboard',
+      link: "/school",
+      component: "Dashboard",
       icon: DashboardCustomizeIcon,
     },
     {
-      link: '/school/class',
-      component: 'Class',
+      link: "/school/class",
+      component: "Class",
       icon: FormatListNumberedIcon,
     },
     {
-      link: '/school/subjects',
-      component: 'Subjects',
+      link: "/school/subjects",
+      component: "Subjects",
       icon: SubjectIcon,
     },
     {
-      link: '/school/students',
-      component: 'Students',
+      link: "/school/students",
+      component: "Students",
       icon: PersonOutlineIcon,
     },
     {
-      link: '/school/teachers',
-      component: 'Teachers',
+      link: "/school/teachers",
+      component: "Teachers",
       icon: PeopleAltIcon,
     },
     {
-      link: '/school/schedule',
-      component: 'Schedule',
+      link: "/school/schedule",
+      component: "Schedule",
       icon: EventIcon,
     },
     {
-      link: '/school/attendance',
-      component: 'Attendance',
+      link: "/school/attendance",
+      component: "Attendance",
       icon: RecentActorsIcon,
     },
     {
-      link: '/school/examinations',
-      component: 'Examinations',
+      link: "/school/examinations",
+      component: "Examinations",
       icon: ExplicitIcon,
     },
     {
-      link: '/school/notice',
-      component: 'Notice',
+      link: "/school/notice",
+      component: "Notice",
       icon: NotificationsIcon,
     },
   ];
 
+  React.useEffect(() => {
+    console.log(location.pathname);
+  }, [location.pathname]);
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -192,7 +197,7 @@ export default function SchoolLayout() {
               {
                 marginRight: 5,
               },
-              open && { display: 'none' },
+              open && { display: "none" },
             ]}
           >
             <MenuIcon />
@@ -205,13 +210,25 @@ export default function SchoolLayout() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
           {navArr.map((text, index) => (
-            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{
+                display: "block",
+                backgroundColor:
+                  location.pathname === text.link ? "#1976d2" : "inherit",
+              }}
+            >
               <ListItemButton
                 sx={[
                   {
@@ -220,10 +237,10 @@ export default function SchoolLayout() {
                   },
                   open
                     ? {
-                        justifyContent: 'initial',
+                        justifyContent: "initial",
                       }
                     : {
-                        justifyContent: 'center',
+                        justifyContent: "center",
                       },
                 ]}
                 onClick={() => navigate(text.link)}
@@ -232,14 +249,14 @@ export default function SchoolLayout() {
                   sx={[
                     {
                       minWidth: 0,
-                      justifyContent: 'center',
+                      justifyContent: "center",
                     },
                     open
                       ? {
                           mr: 3,
                         }
                       : {
-                          mr: 'auto',
+                          mr: "auto",
                         },
                   ]}
                 >
@@ -262,7 +279,6 @@ export default function SchoolLayout() {
           ))}
         </List>
         <Divider />
-        
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

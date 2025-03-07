@@ -12,8 +12,6 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
     setChecked(true);
   }, []);
 
-  console.log(user);
-
   if (checked && !authenticated) {
     return <Navigate to="/login" />;
   }
@@ -21,6 +19,7 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
   if (checked && (!user || !allowedRoles.includes(user.role))) {
     return <Navigate to="/login" />;
   }
-
-  return children;
+  if (checked) {
+    return children;
+  }
 }

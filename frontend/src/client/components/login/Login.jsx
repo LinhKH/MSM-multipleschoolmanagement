@@ -6,7 +6,6 @@ import loginSchema from "../../../yupSchema/loginSchema";
 import axios from "axios";
 import MessageSnackbar from "../../../basic_utility_components/snackbar/MessageSnackbar";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
 
 const Login = () => {
   const [message, setMessage] = useState("");

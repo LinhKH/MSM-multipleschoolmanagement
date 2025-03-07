@@ -4,14 +4,12 @@ const registerSchema = yup.object().shape({
   school_name: yup
     .string()
     .required("Tên trường học là bắt buộc")
-    .min(6, "Tên trường học phải có ít nhất 6 ký tự")
-    .max(20, "Tên trường học phải có tối đa 20 ký tự"),
+    .min(6, "Tên trường học phải có ít nhất 6 ký tự"),
   email: yup.string().required("Email là bắt buộc").email("Email không hợp lệ"),
   owner_name: yup
     .string()
     .required("Tên hiệu trưởng là bắt buộc")
-    .min(3, "Tên hiệu trưởng phải có ít nhất 3 ký tự")
-    .max(20, "Tên hiệu trưởng  phải có tối đa 20 ký tự"),
+    .min(3, "Tên hiệu trưởng phải có ít nhất 3 ký tự"),
   password: yup
     .string()
     .required("Mật khẩu là bắt buộc")

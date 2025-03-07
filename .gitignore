@@ -3,10 +3,10 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+frontend/public/images/uploaded
 # Logs
 logs/
 *.log
-
 # Dependency directories
 jspm_packages/
 

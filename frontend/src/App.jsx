@@ -1,5 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster, toast } from 'sonner';
+
 // school routes
 import SchoolLayout from "./school/SchoolLayout";
 import Attendance from "./school/components/attendance/Attendance";
@@ -96,6 +98,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <Toaster position="top-center" richColors />
     </>
   );
 }

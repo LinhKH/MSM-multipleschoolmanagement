@@ -143,7 +143,7 @@ export const getAllSchools = async (req, res) => {
 // getSchoolOwnData
 export const getSchoolById = async (req, res) => {
   try {
-    const school = await School.findById(req.user.id);
+    const school = await School.findById(req.user.id).select("-password");
     // .select(["-password", "-createdAt", "-updatedAt", "-_id", "-email", "-owner_name"]);
     res.status(200).json({
       success: true,
@@ -211,8 +211,8 @@ export const updateSchoolById = async (req, res) => {
 
         let photoData = fs.readFileSync(filePath);
         fs.writeFileSync(newFilePath, photoData);
+        school.school_image = fileName;
       }
-
       await school.save();
       res.status(200).json({
         success: true,
