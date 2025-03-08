@@ -123,12 +123,10 @@ const Register = () => {
           value={Formik.values.school_name}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          error={Formik.touched.school_name && Boolean(Formik.errors.school_name)}
+          helperText={Formik.touched.school_name && Formik.errors.school_name}
         />
-        {Formik.touched.school_name && Formik.errors.school_name ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.school_name}
-          </p>
-        ) : null}
+        
         <TextField
           id="outlined-basic"
           name="email"
@@ -137,12 +135,10 @@ const Register = () => {
           value={Formik.values.email}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          error={Formik.touched.email && Boolean(Formik.errors.email)}
+          helperText={Formik.touched.email && Formik.errors.email}
         />
-        {Formik.touched.email && Formik.errors.email ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.email}
-          </p>
-        ) : null}
+        
         <TextField
           id="outlined-basic"
           name="owner_name"
@@ -151,12 +147,10 @@ const Register = () => {
           value={Formik.values.owner_name}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          error={Formik.touched.owner_name && Boolean(Formik.errors.owner_name)}
+          helperText={Formik.touched.owner_name && Formik.errors.owner_name}
         />
-        {Formik.touched.owner_name && Formik.errors.owner_name ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.owner_name}
-          </p>
-        ) : null}
+       
         <TextField
           id="outlined-basic"
           name="password"
@@ -166,12 +160,10 @@ const Register = () => {
           value={Formik.values.password}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          error={Formik.touched.password && Boolean(Formik.errors.password)}
+          helperText={Formik.touched.password && Formik.errors.password}
         />
-        {Formik.touched.password && Formik.errors.password ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.password}
-          </p>
-        ) : null}
+       
         <TextField
           id="outlined-basic"
           name="confirm_password"
@@ -181,12 +173,10 @@ const Register = () => {
           value={Formik.values.confirm_password}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          error={Formik.touched.confirm_password && Boolean(Formik.errors.confirm_password)}
+          helperText={Formik.touched.confirm_password && Formik.errors.confirm_password}
         />
-        {Formik.touched.confirm_password && Formik.errors.confirm_password ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.confirm_password}
-          </p>
-        ) : null}
+       
         <Button type="submit" variant="contained">
           Đăng ký
         </Button>

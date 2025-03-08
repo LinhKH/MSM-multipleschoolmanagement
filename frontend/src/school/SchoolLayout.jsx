@@ -179,10 +179,6 @@ export default function SchoolLayout() {
     },
   ];
 
-  React.useEffect(() => {
-    console.log(location.pathname);
-  }, [location.pathname]);
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

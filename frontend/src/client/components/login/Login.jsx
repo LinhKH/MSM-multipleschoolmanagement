@@ -91,12 +91,10 @@ const Login = () => {
           value={Formik.values.email}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          error={Formik.touched.email && Boolean(Formik.errors.email)}
+          helperText={Formik.touched.email && Formik.errors.email}
         />
-        {Formik.touched.email && Formik.errors.email ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.email}
-          </p>
-        ) : null}
+        
         <TextField
           id="outlined-basic"
           name="password"
@@ -106,12 +104,9 @@ const Login = () => {
           value={Formik.values.password}
           onChange={Formik.handleChange}
           onBlur={Formik.handleBlur}
+          error={Formik.touched.password && Boolean(Formik.errors.password)}
+          helperText={Formik.touched.password && Formik.errors.password}
         />
-        {Formik.touched.password && Formik.errors.password ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {Formik.errors.password}
-          </p>
-        ) : null}
 
         <Button type="submit" variant="contained">
           Đăng nhập

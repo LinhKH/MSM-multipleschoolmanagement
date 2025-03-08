@@ -4,6 +4,7 @@ npm-debug.log
 yarn-error.log
 
 frontend/public/images/uploaded
+frontend/public/images/upload
 # Logs
 logs/
 *.log

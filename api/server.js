@@ -11,6 +11,7 @@ import connectDB from "./config/connectDB.js";
 import schoolRouter from './routes/school.router.js';
 import classRouter from './routes/class.router.js';
 import subjectRouter from './routes/subject.router.js';
+import studentRouter from './routes/student.router.js';
 
 const app = express();
 app.use(
@@ -32,6 +33,7 @@ app.get('/test', (req, res) => {
 app.use('/api/school', schoolRouter);
 app.use('/api/class', classRouter);
 app.use('/api/subject', subjectRouter);
+app.use('/api/student', studentRouter);
 
 const PORT = process.env.PORT || 8000;
 

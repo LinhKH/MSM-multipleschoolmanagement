@@ -158,12 +158,10 @@ const Class = () => {
           value={formik.values.class_text}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.class_text && Boolean(formik.errors.class_text)}
+          helperText={formik.touched.class_text && formik.errors.class_text}
         />
-        {formik.touched.class_text && formik.errors.class_text ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {formik.errors.class_text}
-          </p>
-        ) : null}
+        
         <TextField
           id="outlined-basic"
           name="class_num"
@@ -173,12 +171,9 @@ const Class = () => {
           value={formik.values.class_num}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.class_num && Boolean(formik.errors.class_num)}
+          helperText={formik.touched.class_num && formik.errors.class_num}
         />
-        {formik.touched.class_num && formik.errors.class_num ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {formik.errors.class_num}
-          </p>
-        ) : null}
 
         <Button type="submit" variant="contained">
           {isEdit ? "Cập nhật" : "Tạo"}

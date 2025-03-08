@@ -160,12 +160,10 @@ const Subjects = () => {
           value={formik.values.subject_name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.subject_name && Boolean(formik.errors.subject_name)}
+          helperText={formik.touched.subject_name && formik.errors.subject_name}
         />
-        {formik.touched.subject_name && formik.errors.subject_name ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {formik.errors.subject_name}
-          </p>
-        ) : null}
+        
         <TextField
           id="outlined-basic"
           name="subject_code"
@@ -175,13 +173,10 @@ const Subjects = () => {
           value={formik.values.subject_code}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.subject_code && Boolean(formik.errors.subject_code)}
+          helperText={formik.touched.subject_code && formik.errors.subject_code}
         />
-        {formik.touched.subject_code && formik.errors.subject_code ? (
-          <p style={{ color: "red", textTransform: "capitalize" }}>
-            {formik.errors.subject_code}
-          </p>
-        ) : null}
-
+       
         <Button type="submit" variant="contained">
           {isEdit ? "Cập nhật" : "Tạo"}
         </Button>
