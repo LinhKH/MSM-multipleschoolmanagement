@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { useFormik } from "formik";
-
 import { toast } from "sonner";
 
 import studentSchema from "../../../yupSchema/studentSchema";
@@ -52,28 +51,37 @@ const Students = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: studentSchema,
+    validationSchema: studentSchema(isEdit),
     onSubmit: async (values) => {
       if (isEdit) {
-        updateStudent(values);
+        await updateStudent(values);
       } else {
-        createStudent(values);
+        await createStudent(values);
       }
     },
   });
 
   const updateStudent = async (values) => {
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
+    if (file) {
+      formData.append("image", file);
+    }
+    if (values.password === "") {
+      formData.delete("password");
+    }
     try {
       const { data } = await axios.patch(
         `${backendUrl}/student/update/${editId}`,
-        values
+        formData
       );
-      if (data.success) {
-        toast.success(data.message);
-        fetchStudents();
-        setIsEdit(false);
-        formik.resetForm();
-      }
+
+      formik.resetForm();
+      handleClearFile();
+      fetchStudents();
+      toast.success(data.message);
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
@@ -111,18 +119,18 @@ const Students = () => {
     formik.resetForm();
   };
 
-  const handleEdit = async (classItem) => {
+  const handleEdit = async (student) => {
     setIsEdit(true);
-    setEditId(classItem._id);
+    setEditId(student._id);
+    console.log(student);
     formik.setValues({
-      email: classItem.email,
-      name: classItem.name,
-      student_class: classItem.student_class,
-      age: classItem.age,
-      gender: classItem.gender,
-      guardian: classItem.guardian,
-      guardian_phone: classItem.guardian_phone,
-      password: classItem.password,
+      email: student.email,
+      name: student.name,
+      student_class: student.student_class?._id ?? "",
+      age: student.age,
+      gender: student.gender,
+      guardian: student.guardian,
+      guardian_phone: student.guardian_phone,
     });
   };
 
@@ -290,7 +298,7 @@ const Students = () => {
             labelId="demo-simple-select-helper-label"
             id="student_class"
             name="student_class"
-            value={formik.values.student_class}
+            value={formik.values.student_class || ""}
             label="Lớp học"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -412,11 +420,17 @@ const Students = () => {
           type="password"
           label="Mât khẩu"
           variant="outlined"
-          value={formik.values.password}
+          value={formik.values.password ?? ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
+          error={
+            !isEdit &&
+            formik.touched.password &&
+            Boolean(formik.errors.password)
+          }
+          helperText={
+            !isEdit && formik.touched.password && formik.errors.password
+          }
         />
 
         <TextField
@@ -425,15 +439,18 @@ const Students = () => {
           type="password"
           label="Xác nhận mật khẩu"
           variant="outlined"
-          value={formik.values.confirm_password}
+          value={formik.values.confirm_password ?? ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={
+            !isEdit &&
             formik.touched.confirm_password &&
             Boolean(formik.errors.confirm_password)
           }
           helperText={
-            formik.touched.confirm_password && formik.errors.confirm_password
+            !isEdit &&
+            formik.touched.confirm_password &&
+            formik.errors.confirm_password
           }
         />
         <Button type="submit" variant="contained">
@@ -529,9 +546,17 @@ const Students = () => {
                   {student.guardian}
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
+              <CardActions sx={{ justifyContent: "center" }}>
+                <Button size="small" onClick={() => handleEdit(student)}>
+                  <ModeEditOutlineIcon />
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => handleClickOpen(student._id)}
+                  sx={{ color: "red" }}
+                >
+                  <DeleteIcon />
+                </Button>
               </CardActions>
             </Card>
           ))}
@@ -542,7 +567,7 @@ const Students = () => {
           open={open}
           handleClose={handleClose}
           handleConfirmDelete={handleConfirmDelete}
-          whatDelete="môn học"
+          whatDelete="Học sinh"
         />
       )}
     </>

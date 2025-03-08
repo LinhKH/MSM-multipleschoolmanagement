@@ -192,7 +192,7 @@ export const updateStudent = async (req, res) => {
         });
       }
 
-      const student = await Student.findById(req.user.id);
+      const student = await Student.findById(req.params.id);
 
       if (!student) {
         return res.status(400).json({
@@ -235,6 +235,12 @@ export const updateStudent = async (req, res) => {
         fs.writeFileSync(newFilePath, photoData);
         student.student_image = fileName;
       }
+      if (fields.password) {
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(fields.password[0], salt);
+        student.password = hashPassword;
+      }
+      
       await student.save();
       res.status(200).json({
         success: true,

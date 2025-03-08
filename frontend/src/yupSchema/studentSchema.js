@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const studentSchema = yup.object().shape({
+const studentSchema = (isEdit) => yup.object().shape({
   email: yup.string().email("Email không hợp lệ").required("Email là bắt buộc"),
   name: yup
     .string()
@@ -11,11 +11,12 @@ const studentSchema = yup.object().shape({
   gender: yup.string().required("Giới tính là bắt buộc"),
   guardian: yup.string().required("Phụ huynh là bắt buộc"),
   guardian_phone: yup.string().required("Số điện thoại phụ huynh là bắt buộc"),
-  password: yup.string().required("Mật khẩu là bắt buộc"),
-  confirm_password: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Mật khẩu không khớp")
-    .required("Xác nhận mật khẩu là bắt buộc"),
+  ...(isEdit ? {} : {
+    password: yup.string().required('Mật khẩu là bắt buộc').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+    confirm_password: yup.string()
+      .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp')
+      .required('Xác nhận mật khẩu là bắt buộc'),
+  }),
 });
 
 export default studentSchema;
