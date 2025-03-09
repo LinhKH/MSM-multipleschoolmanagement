@@ -12,13 +12,18 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const pages = [
   { component: 'Login', link: '/login' },
   { component: 'Register', link: '/register' }
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [
+  { name: 'Profile', link: '/' },
+  { name: 'Account', link: '/' },
+  { name: 'Dashboard', link: '/school' },
+  { name: 'Logout', link: '/' },
+];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -157,9 +162,11 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                </MenuItem>
+                <Link to={setting.link} key={setting.name}  style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
