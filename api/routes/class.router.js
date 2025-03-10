@@ -11,7 +11,7 @@ import { authMiddleware } from "../auth/auth.js";
 const router = express.Router();
 
 router.post("/create", authMiddleware(["SCHOOL"]), createClass);
-router.get("/all", authMiddleware(["SCHOOL"]), getClasses);
+router.get("/all", authMiddleware(["SCHOOL", "STUDENT"]), getClasses);
 router.patch("/update/:id", authMiddleware(["SCHOOL"]), updateClass);
 router.delete("/delete/:id", authMiddleware(["SCHOOL"]), deleteClass);
 
