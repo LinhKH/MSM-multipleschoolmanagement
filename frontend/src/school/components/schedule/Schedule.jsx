@@ -12,7 +12,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography,
 } from "@mui/material";
 import axios from "axios";
 
@@ -68,19 +67,19 @@ const Schedule = () => {
   };
   const fetchScheduleByClass = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/schedule/fetch-with-class/${classId}`);
+      const { data } = await axios.get(
+        `${backendUrl}/schedule/fetch-with-class/${classId}`
+      );
       if (data.success) {
-        
         const responData = data.data.map((item) => {
-          return {  
+          return {
             title: `Môn: ${item.subject.subject_name} - GV: ${item.teacher.name}`,
-            start: new Date(item.startTime),
-            end: new Date(item.endTime),
-          }
+            start: moment.utc(item.startTime).toDate(),
+            end: moment.utc(item.endTime).toDate(),
+          };
         });
 
         setEvents(responData);
-
       }
     } catch (error) {
       console.log(error);
@@ -90,17 +89,14 @@ const Schedule = () => {
     try {
       const { data } = await axios.get(`${backendUrl}/schedule/fetch-all`);
       if (data.success) {
-        
         const responData = data.data.map((item) => {
           return {
             title: `Môn: ${item.subject.subject_name} - GV: ${item.teacher.name}`,
-            start: moment.tz(item.startTime, "Asia/Ho_Chi_Minh").toDate(),
-            end: moment.tz(item.endTime, "Asia/Ho_Chi_Minh").toDate(),
-          }
+            start: moment.utc(item.startTime).tz("Asia/Ho_Chi_Minh").toDate(),
+            end: moment.utc(item.endTime).tz("Asia/Ho_Chi_Minh").toDate(),
+          };
         });
-
         setEvents(responData);
-
       }
     } catch (error) {
       console.log(error);
@@ -160,7 +156,7 @@ const Schedule = () => {
         localizer={localizer}
         events={events}
         defaultView="week"
-        views={["day", "week", "month"]}
+        views={["day", "week", "month", "agenda"]}
         step={30}
         timeslots={1}
         min={new Date(2021, 10, 0, 7, 0, 0)}
@@ -183,6 +179,7 @@ const Schedule = () => {
           isEdit={isEdit}
           setIsEdit={setIsEdit}
           classId={classId}
+          fetchScheduleByClass={fetchScheduleByClass}
         />
       )}
     </>

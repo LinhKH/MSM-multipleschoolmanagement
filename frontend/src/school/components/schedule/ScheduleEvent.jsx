@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { toast } from "sonner";
 
-const ScheduleEvent = ({ open, handleClose, isEdit, classId }) => {
+const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClass }) => {
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -29,19 +29,19 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId }) => {
     {
       id: 1,
       label: "Tiết 1 (7h sáng - 8h sáng)",
-      startTime: "7:00",
-      endTime: "8:00",
+      startTime: "07:00",
+      endTime: "08:00",
     },
     {
       id: 2,
       label: "Tiết 2 (8h sáng - 9h sáng)",
-      startTime: "8:00",
-      endTime: "9:00",
+      startTime: "08:00",
+      endTime: "09:00",
     },
     {
       id: 3,
       label: "Tiết 3 (9h sáng - 10h sáng)",
-      startTime: "9:00",
+      startTime: "09:00",
       endTime: "10:00",
     },
     {
@@ -136,8 +136,8 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId }) => {
       const params = {
         ...values,
         day: date.format('YYYY-MM-DD'),
-        startTime: startDateTime,
-        endTime: endDateTime,
+        startTime: startDateTime.toDate(),
+        endTime: endDateTime.toDate(),
         classId,
       };
 
@@ -159,6 +159,7 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId }) => {
       if (data.success) {
         handleClose();
         toast.success(data.message);
+        fetchScheduleByClass();
       }
     } catch (error) {
       console.log(error);
