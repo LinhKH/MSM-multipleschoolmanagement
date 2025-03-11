@@ -25,6 +25,7 @@ const localizer = momentLocalizer(moment);
 const Schedule = () => {
   const [open, setOpen] = React.useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [eventId, setEventId] = useState("");
 
   const handleOpen = () => {
     if (!classId) {
@@ -73,6 +74,7 @@ const Schedule = () => {
       if (data.success) {
         const responData = data.data.map((item) => {
           return {
+            id: item._id,
             title: `Môn: ${item.subject.subject_name} - GV: ${item.teacher.name}`,
             start: moment.utc(item.startTime).toDate(),
             end: moment.utc(item.endTime).toDate(),
@@ -91,6 +93,7 @@ const Schedule = () => {
       if (data.success) {
         const responData = data.data.map((item) => {
           return {
+            id: item._id,
             title: `Môn: ${item.subject.subject_name} - GV: ${item.teacher.name}`,
             start: moment.utc(item.startTime).tz("Asia/Ho_Chi_Minh").toDate(),
             end: moment.utc(item.endTime).tz("Asia/Ho_Chi_Minh").toDate(),
@@ -108,6 +111,13 @@ const Schedule = () => {
 
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
   const onView = useCallback((newView) => setView(newView), [setView]);
+
+  const onSelectEvent = (event) => {
+    console.log(event);
+    setEventId(event.id);
+    setIsEdit(true);
+    setOpen(true);
+  };
 
   useEffect(() => {
     fetchClasses();
@@ -170,6 +180,7 @@ const Schedule = () => {
         onView={onView}
         view={view}
         date={date}
+        onSelectEvent={onSelectEvent}
       />
 
       {open && (
@@ -179,6 +190,8 @@ const Schedule = () => {
           isEdit={isEdit}
           setIsEdit={setIsEdit}
           classId={classId}
+          setClassId={setClassId}
+          eventId={eventId}
           fetchScheduleByClass={fetchScheduleByClass}
         />
       )}

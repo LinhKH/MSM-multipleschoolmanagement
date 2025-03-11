@@ -3,12 +3,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
+import dayjs from "dayjs";
 
 import Modal from "@mui/material/Modal";
 import { useFormik } from "formik";
 import periodSchema from "../../../yupSchema/periodSchema";
 
 import moment from "moment-timezone";
+import DialogConfirm from "../../../basic_utility_components/model_confirm/DialogConfirm";
+
 import {
   Box,
   Button,
@@ -21,9 +24,19 @@ import {
 } from "@mui/material";
 import { toast } from "sonner";
 
-const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClass }) => {
+const ScheduleEvent = ({
+  open,
+  handleClose,
+  isEdit,
+  setIsEdit,
+  classId,
+  setClassId,
+  fetchScheduleByClass,
+  eventId,
+}) => {
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [confirm, setConfirm] = useState(false);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const periods = [
     {
@@ -96,6 +109,7 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
     px: 4,
     pb: 3,
   };
+
   const fetchTeachers = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/teacher/all`);
@@ -117,12 +131,35 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
       console.log(error);
     }
   };
+
+  const fetchScheduleById = async () => {
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}/schedule/single-fetch/${eventId}`
+      );
+      if (data.success) {
+        formik.setValues({
+          teacher: data.data.teacher._id,
+          subject: data.data.subject._id,
+          period: `${moment(data.data.startTime).format("HH:mm")},${moment(
+            data.data.endTime
+          ).format("HH:mm")}`,
+          date: dayjs(data.data.day),
+        });
+        setClassId(data.data.class._id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const initialValues = {
     teacher: "",
     subject: "",
     period: "",
     date: null,
   };
+
   const formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
@@ -130,12 +167,18 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
       const date = values.date;
       const [startTime, endTime] = values.period.split(",");
 
-      const startDateTime = moment.tz(`${date.format('YYYY-MM-DD')} ${startTime}`, "Asia/Ho_Chi_Minh");
-      const endDateTime = moment.tz(`${date.format('YYYY-MM-DD')} ${endTime}`, "Asia/Ho_Chi_Minh");
+      const startDateTime = moment.tz(
+        `${date.format("YYYY-MM-DD")} ${startTime}`,
+        "Asia/Ho_Chi_Minh"
+      );
+      const endDateTime = moment.tz(
+        `${date.format("YYYY-MM-DD")} ${endTime}`,
+        "Asia/Ho_Chi_Minh"
+      );
 
       const params = {
         ...values,
-        day: date.format('YYYY-MM-DD'),
+        day: date.format("YYYY-MM-DD"),
         startTime: startDateTime.toDate(),
         endTime: endDateTime.toDate(),
         classId,
@@ -149,7 +192,55 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
     },
   });
 
-  const updateSchedule = async (params) => {};
+  const handleModalClose = () => {
+    handleClose();
+    setIsEdit(false);
+    formik.resetForm();
+  };
+  const handleCloseConfirm = () => {
+    setConfirm(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const { data } = await axios.delete(
+        `${backendUrl}/schedule/delete/${eventId}`
+      );
+      if (data.success) {
+        handleModalClose();
+        setClassId("");
+        toast.success(data.message);
+        fetchScheduleByClass();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Xóa trường học thất bại!");
+    }
+  };
+
+  const removeEvent = async () => {
+    setConfirm(true);
+  };
+
+  const updateSchedule = async (params) => {
+    try {
+      const { data } = await axios.patch(
+        `${backendUrl}/schedule/update/${eventId}`,
+        params
+      );
+      if (data.success) {
+        handleClose();
+        formik.resetForm();
+        setClassId("");
+        toast.success(data.message);
+        fetchScheduleByClass();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Cập nhật trường học thất bại!");
+    }
+  };
+
   const createSchedule = async (params) => {
     try {
       const { data } = await axios.post(
@@ -158,6 +249,8 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
       );
       if (data.success) {
         handleClose();
+        formik.resetForm();
+        setClassId("");
         toast.success(data.message);
         fetchScheduleByClass();
       }
@@ -171,11 +264,18 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
     fetchTeachers();
     fetchSubjects();
   }, []);
+
+  useEffect(() => {
+    if (isEdit) {
+      fetchScheduleById();
+    }
+  }, [isEdit]);
+
   return (
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -284,7 +384,7 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
                   label="Ngày"
                   value={formik.values.date}
                   onChange={(value) => formik.setFieldValue("date", value)}
-                  renderInput={(params) => <TextField {...params} />}
+                  slotProps={{ textField: { variant: "outlined" } }}
                 />
               </LocalizationProvider>
               {formik.touched.date && formik.errors.date ? (
@@ -292,12 +392,39 @@ const ScheduleEvent = ({ open, handleClose, isEdit, classId, fetchScheduleByClas
               ) : null}
             </FormControl>
 
-            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-              {isEdit ? "Cập nhật" : "Tạo"}
-            </Button>
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                {isEdit ? "Cập nhật" : "Tạo"}
+              </Button>
+              {isEdit && (
+                <Button
+                  onClick={removeEvent}
+                  variant="contained"
+                  sx={{ mt: 2, backgroundColor: "tomato", color: "white" }}
+                >
+                  {"Xóa"}
+                </Button>
+              )}
+              <Button
+                onClick={handleModalClose}
+                variant="outlined"
+                sx={{ mt: 2 }}
+              >
+                {"Hủy"}
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Modal>
+
+      {confirm && (
+        <DialogConfirm
+          open={confirm}
+          handleClose={handleCloseConfirm}
+          handleConfirmDelete={handleConfirmDelete}
+          whatDelete="Lịch học"
+        />
+      )}
     </div>
   );
 };

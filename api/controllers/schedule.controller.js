@@ -14,6 +14,18 @@ export const getScheduleWithClass = async (req, res) => {
     res.status(500).json({ success: false, message: "Lỗi khi lấy lịch học" });
   }
 };
+export const getScheduleWithId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const schedule = await Schedule.findById(id)
+      .populate("subject")
+      .populate("class")
+      .populate("teacher");
+    res.status(200).json({ success: true, data: schedule });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Lỗi khi lấy lịch học" });
+  }
+};
 export const getAllSchedules = async (req, res) => {
   try {
     const schedules = await Schedule.find({

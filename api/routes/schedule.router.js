@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   getScheduleWithClass,
+  getScheduleWithId,
   getAllSchedules,
   createSchedule,
   updateSchedule,
@@ -14,6 +15,7 @@ const router = express.Router();
 router.post("/create", authMiddleware(["SCHOOL"]), createSchedule);
 router.get("/fetch-all", authMiddleware(["SCHOOL"]), getAllSchedules);
 router.get("/fetch-with-class/:class_id", authMiddleware(["SCHOOL"]), getScheduleWithClass);
+router.get("/single-fetch/:id", authMiddleware(["SCHOOL"]), getScheduleWithId);
 router.patch("/update/:id", authMiddleware(["SCHOOL"]), updateSchedule);
 router.delete("/delete/:id", authMiddleware(["SCHOOL"]), deleteSubject);
 
