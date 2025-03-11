@@ -31,6 +31,8 @@ import EventIcon from "@mui/icons-material/Event";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import ExplicitIcon from "@mui/icons-material/Explicit";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import LogoutIcon from "@mui/icons-material/Logout";
+
 import { AuthContext } from "../context/AuthContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect } from "react";
@@ -220,14 +222,30 @@ export default function SchoolLayout() {
           >
             <MenuIcon />
           </IconButton>
-          <div style={{ display: "flex", justifyContent: "space-between", flexDirection: (isMobile) ? 'column' : '', width: "100%" }}>
-            <Typography variant="h6" noWrap component="div" sx={{ fontSize: isMobile ? "1rem" : "1.25rem" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: isMobile ? "column" : "",
+              width: "100%",
+            }}
+          >
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ fontSize: isMobile ? "1rem" : "1.25rem" }}
+            >
               School Management System [ Multiple ]
             </Typography>
-            <Typography variant="h6" noWrap component="div" sx={{ fontSize: isMobile ? "1rem" : "1.25rem" }}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ fontSize: isMobile ? "1rem" : "1.25rem" }}
+            >
               {user.school_name} | Role: {user.role}
             </Typography>
-
           </div>
         </Toolbar>
       </AppBar>
@@ -303,6 +321,62 @@ export default function SchoolLayout() {
           ))}
         </List>
         <Divider />
+        <Box sx={{ flexGrow: 1 }} />
+        <ListItem
+          disablePadding
+          sx={{
+            display: "block",
+            backgroundColor: "inherit",
+          }}
+        >
+          <ListItemButton
+            sx={[
+              {
+                minHeight: 48,
+                px: 2.5,
+                marginBottom: "auto",
+              },
+              open
+                ? {
+                    justifyContent: "initial",
+                  }
+                : {
+                    justifyContent: "center",
+                  },
+            ]}
+            onClick={() => navigate("/school/login")}
+          >
+            <ListItemIcon
+              sx={[
+                {
+                  minWidth: 0,
+                  justifyContent: "center",
+                },
+                open
+                  ? {
+                      mr: 3,
+                    }
+                  : {
+                      mr: "auto",
+                    },
+              ]}
+            >
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Đăng xuất"
+              sx={[
+                open
+                  ? {
+                      opacity: 1,
+                    }
+                  : {
+                      opacity: 0,
+                    },
+              ]}
+            />
+          </ListItemButton>
+        </ListItem>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
