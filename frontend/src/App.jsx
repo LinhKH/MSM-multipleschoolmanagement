@@ -5,6 +5,7 @@ import { Toaster, toast } from 'sonner';
 // school routes
 import SchoolLayout from "./school/SchoolLayout";
 import Attendance from "./school/components/attendance/Attendance";
+import AttendanceDetail from "./school/components/attendance/AttendanceDetail";
 import Dashboard from "./school/components/dashboard/Dashboard";
 import Class from "./school/components/class/Class";
 import Examinations from "./school/components/examinations/Examinations";
@@ -51,6 +52,7 @@ function App() {
           >
             <Route index element={<Dashboard />} />
             <Route path="attendance" element={<Attendance />} />
+            <Route path="attendance/:id" element={<AttendanceDetail />} />
             <Route path="class" element={<Class />} />
             <Route path="examinations" element={<Examinations />} />
             <Route path="notice" element={<Notice />} />

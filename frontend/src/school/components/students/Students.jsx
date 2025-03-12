@@ -36,6 +36,7 @@ const Students = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [editId, setEditId] = useState(null);
   const [classes, setClasses] = useState([]);
+  const [params, setParams] = useState({});
 
   const initialValues = {
     email: "",
@@ -164,7 +165,9 @@ const Students = () => {
 
   const fetchStudents = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/student/all`);
+      const { data } = await axios.get(`${backendUrl}/student/search`, {
+        params,
+      });
       if (data.success) {
         setStudents(data.data);
       }
@@ -220,42 +223,17 @@ const Students = () => {
   };
 
   const handleSearch = (e) => {
-    const search = e.target.value;
-    if (search) {
-      const filteredStudents = students.filter((student) =>
-        student.name.toLowerCase().includes(search.toLowerCase())
-      );
-      setStudents(filteredStudents);
-    } else {
-      fetchStudents();
-    }
-  };
-
-  const [params, setParams] = useState({});
-  const handleClass = async (e) => {
-    const classId = e.target.value;
-    setParams({ ...params, class: classId });
-
-    if (classId) {
-      try {
-        const { data } = await axios.get(
-          `${backendUrl}/student/search?student_class=${classId}`
-        );
-        if (data.success) {
-          setStudents(data.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      fetchStudents();
-    }
+    setParams({ ...params, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
     fetchStudents();
     fetchClasses();
   }, []);
+
+  useEffect(() => {
+    fetchStudents();
+  }, [params]);
 
   return (
     <>
@@ -475,6 +453,7 @@ const Students = () => {
           name="search"
           label="Tìm kiếm"
           variant="outlined"
+          value={params.search || ""}
           onChange={handleSearch}
         />
         <FormControl sx={{ m: 1, minWidth: 150 }}>
@@ -482,9 +461,10 @@ const Students = () => {
             Student Class
           </InputLabel>
           <Select
+            name="student_class"
             label="Student Class"
-            value={params.class ?? ""}
-            onChange={handleClass}
+            value={params.student_class || ""}
+            onChange={handleSearch}
             inputProps={{ "aria-label": "Without label" }}
           >
             <MenuItem value="">

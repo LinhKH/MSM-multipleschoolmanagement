@@ -22,17 +22,17 @@ const attendanceSchema = new mongoose.Schema(
     //   type: mongoose.Schema.Types.ObjectId,
     //   ref: "Teacher",
     // },
+    date: {
+      type: Date,
+      required: true,
+    },
     
     status: {
       type: String,
       enum: ["Present", "Absent"],  // co mat, vang mat
+      default: "Present",
       required: true,
     },
-    // date: {
-    //   type: Date,
-    //   required: true,
-    //   default: new Date(),
-    // },
   },
   { timestamps: true }
 );

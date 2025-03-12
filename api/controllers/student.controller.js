@@ -13,7 +13,9 @@ import Attendance from "../models/attendance.model.js";
 
 export const getStudents = async (req, res) => {
   try {
-    const students = await Student.find({ school: req.user.school_id }).populate("student_class");
+    const students = await Student.find({
+      school: req.user.school_id,
+    }).populate("student_class");
     res.status(200).json({ success: true, data: students });
   } catch (error) {
     res
@@ -39,7 +41,9 @@ export const getStudentOwnData = async (req, res) => {
     const student = await Student.findOne({
       _id: req.user.id,
       school: req.user.school_id,
-    }).select("-password").populate("student_class");
+    })
+      .select("-password")
+      .populate("student_class");
     res.status(200).json({ success: true, data: student });
   } catch (error) {
     res.status(500).json({ success: false, message: "Lỗi khi lấy học sinh" });
@@ -50,14 +54,19 @@ export const getStudentWithQuery = async (req, res) => {
   try {
     const filterQuery = { school: req.user.school_id };
 
-    if (req.query.hasOwnProperty("search")) {
+    if (req.query.hasOwnProperty("search") && req.query.search) {
       filterQuery.name = { $regex: req.query.search, $options: "i" };
     }
-    if (req.query.hasOwnProperty("student_class")) {
-      filterQuery.student_class = { $in: req.query.student_class };
+    if (req.query.hasOwnProperty("student_class") && req.query.student_class) {
+      const studentClasses = Array.isArray(req.query.student_class)
+        ? req.query.student_class
+        : [req.query.student_class];
+      filterQuery.student_class = { $in: studentClasses };
     }
 
-    const students = await Student.find(filterQuery).select("-password").populate("student_class");
+    const students = await Student.find(filterQuery)
+      .select("-password")
+      .populate("student_class");
     res.status(200).json({ success: true, data: students });
   } catch (error) {
     res
@@ -240,7 +249,7 @@ export const updateStudent = async (req, res) => {
         const hashPassword = bcrypt.hashSync(fields.password[0], salt);
         student.password = hashPassword;
       }
-      
+
       await student.save();
       res.status(200).json({
         success: true,
@@ -263,12 +272,10 @@ export const deleteStudent = async (req, res) => {
       school: req.user.school_id,
     }).countDocuments();
 
-
     if (studentAttendaceCunt > 0) {
       return res.status(400).json({
         success: false,
-        message:
-          "Không thể xóa học sinh vì học sinh đã có điểm danh",
+        message: "Không thể xóa học sinh vì học sinh đã có điểm danh",
       });
     }
 

@@ -14,6 +14,7 @@ import subjectRouter from './routes/subject.router.js';
 import studentRouter from './routes/student.router.js';
 import teacherRouter from './routes/teacher.router.js';
 import scheduleRouter from './routes/schedule.router.js';
+import attendanceRouter from './routes/attendance.router.js';
 
 const app = express();
 app.use(
@@ -38,6 +39,7 @@ app.use('/api/subject', subjectRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/teacher', teacherRouter);
 app.use('/api/schedule', scheduleRouter);
+app.use('/api/attendance', attendanceRouter);
 
 const PORT = process.env.PORT || 8000;
 

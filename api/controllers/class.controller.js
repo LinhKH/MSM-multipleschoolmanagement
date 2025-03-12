@@ -12,6 +12,14 @@ export const getClasses = async (req, res) => {
     res.status(500).json({ success: false, message: "Lỗi khi lấy lớp học" });
   }
 };
+export const getSingleClass = async (req, res) => {
+  try {
+    const classSingle = await Class.findOne({ school: req.user.school_id, _id: req.params.id }).populate("attendee");
+    res.status(200).json({ success: true, data: classSingle });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Lỗi khi lấy lớp học bởi id" });
+  }
+};
 
 export const createClass = async (req, res) => {
   try {

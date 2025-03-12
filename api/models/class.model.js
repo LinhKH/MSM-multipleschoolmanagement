@@ -17,7 +17,6 @@ const classSchema = new mongoose.Schema(
     attendee: {// giao vien chu nhiem
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teacher",
-      default: false,
     },
   },
   { timestamps: true }
