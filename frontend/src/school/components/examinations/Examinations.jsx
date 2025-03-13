@@ -175,27 +175,28 @@ const Examinations = () => {
   useEffect(() => {
     fetchClasses();
     fetchSubjects();
-    fetchExaminations();
   }, []);
 
   useEffect(() => {
     const fetchExaminationsByClass = async () => {
       try {
-        if (!params?.search) {
-          fetchExaminations();
-          return;
-        }
-        const { data } = await axios.get(
-          `${backendUrl}/examination/class/${params?.search}`
-        );
-        if (data.success) {
-          setExaminations(data.data);
+        if (params?.search) {
+          const { data } = await axios.get(
+            `${backendUrl}/examination/class/${params?.search}`
+          );
+          if (data.success) {
+            setExaminations(data.data);
+          }
         }
       } catch (error) {
         console.log(error);
       }
     };
-    fetchExaminationsByClass();
+    if (params?.search) {
+      fetchExaminationsByClass();
+    } else {
+      fetchExaminations();
+    }
   }, [params]);
   return (
     <>
@@ -358,7 +359,12 @@ const Examinations = () => {
               <FormHelperText>{formik.errors.examType}</FormHelperText>
             ) : null}
           </FormControl>
-          <Button type="submit" variant="contained" color="primary" sx={{ m: 1 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ m: 1 }}
+          >
             {isEdit ? "Cập nhật" : "Tạo"}
           </Button>
           <Button onClick={handleModalClose} variant="outlined" sx={{ m: 1 }}>
@@ -372,7 +378,6 @@ const Examinations = () => {
           height: "auto",
           borderRadius: 1,
           border: 1,
-          // bgcolor: "gray",
           p: 2,
           mt: 2,
         }}
@@ -385,6 +390,7 @@ const Examinations = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Ngày</TableCell>
+                <TableCell align="right">Lớp học</TableCell>
                 <TableCell align="right">Môn học</TableCell>
                 <TableCell align="right">Loại</TableCell>
                 <TableCell align="right">Chức năng</TableCell>
@@ -398,6 +404,9 @@ const Examinations = () => {
                 >
                   <TableCell component="th" scope="row">
                     {dayjs(row.examDate).format("MM/DD/YYYY")}
+                  </TableCell>
+                  <TableCell align="right">
+                    {row.class?.class_text} - {row.class?.class_num}
                   </TableCell>
                   <TableCell align="right">
                     {row.subject?.subject_name}

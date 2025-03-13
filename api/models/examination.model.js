@@ -27,6 +27,7 @@ const examinationSchema = new mongoose.Schema(
     examType: {
       type: String, // 15 phut, 1 tiet, giua ki, cuoi ki
       required: true,
+      enum: ["15p", "1t", "gk", "ck"],
     },
     // startTime: {
     //   type: Date,
