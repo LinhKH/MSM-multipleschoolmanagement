@@ -128,45 +128,49 @@ export const createTeacher = async (req, res) => {
 
 export const loginTeacher = async (req, res) => {
   try {
-    const teacher = await Teacher.findOne({ email: req.body.email });
-    if (!teacher) {
-      return res.status(400).json({
-        message: "Giáo viên không tồn tại!",
-      });
-    }
-
-    if (!bcrypt.compareSync(req.body.password, teacher.password)) {
-      return res.status(400).json({
-        message: "Thư hoặc mât khẩu không chính xác!",
-      });
-    }
-
-    const jwtSecret = process.env.SECRET_KEY;
-    const token = jwt.sign(
-      {
-        id: teacher._id,
-        school_id: teacher.school,
-        role: "TEACHER",
-        name: teacher.name,
-      },
-      jwtSecret,
-      {
-        expiresIn: "1d",
+    const form = formidable({});
+    form.keepExtensions = true;
+    form.parse(req, async (err, fields, files) => {
+      const teacher = await Teacher.findOne({ email: fields.email[0] });
+      if (!teacher) {
+        return res.status(400).json({
+          message: "Giáo viên không tồn tại!",
+        });
       }
-    );
 
-    res.header("Authorization", token);
+      if (!bcrypt.compareSync(fields.password[0], teacher.password)) {
+        return res.status(400).json({
+          message: "Thư hoặc mât khẩu không chính xác!",
+        });
+      }
 
-    res.status(200).json({
-      success: true,
-      message: "Đăng nhập thành công!",
-      user: {
-        id: teacher._id,
-        school_id: req.user.school_id,
-        name: teacher.name,
-        role: "TEACHER",
-      },
+      const jwtSecret = process.env.SECRET_KEY;
+      const token = jwt.sign(
+        {
+          id: teacher._id,
+          school_id: teacher.school,
+          role: "TEACHER",
+          name: teacher.name,
+        },
+        jwtSecret,
+        {
+          expiresIn: "1d",
+        }
+      );
+
+      res.header("Authorization", token);
+
+      res.status(200).json({
+        success: true,
+        message: "Đăng nhập thành công!",
+        user: {
+          id: teacher._id,
+          name: teacher.name,
+          role: "TEACHER",
+        },
+      });
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -234,7 +238,7 @@ export const updateTeacher = async (req, res) => {
         const hashPassword = bcrypt.hashSync(fields.password[0], salt);
         teacher.password = hashPassword;
       }
-      
+
       await teacher.save();
       res.status(200).json({
         success: true,
@@ -252,7 +256,6 @@ export const updateTeacher = async (req, res) => {
 
 export const deleteTeacher = async (req, res) => {
   try {
-    
     await Teacher.findByIdAndDelete(req.params.id);
 
     res.status(200).json({

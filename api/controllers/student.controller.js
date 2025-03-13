@@ -143,44 +143,47 @@ export const createStudent = async (req, res) => {
 
 export const loginStudent = async (req, res) => {
   try {
-    const student = await Student.findOne({ email: req.body.email });
-    if (!student) {
-      return res.status(400).json({
-        message: "Học sinh không tồn tại!",
-      });
-    }
-
-    if (!bcrypt.compareSync(req.body.password, student.password)) {
-      return res.status(400).json({
-        message: "Thư hoặc mât khẩu không chính xác!",
-      });
-    }
-
-    const jwtSecret = process.env.SECRET_KEY;
-    const token = jwt.sign(
-      {
-        id: student._id,
-        school_id: student.school,
-        role: "STUDENT",
-        name: student.name,
-      },
-      jwtSecret,
-      {
-        expiresIn: "1d",
+    const form = formidable({});
+    form.keepExtensions = true;
+    form.parse(req, async (err, fields, files) => {
+      const student = await Student.findOne({ email: fields.email[0] });
+      if (!student) {
+        return res.status(400).json({
+          message: "Học sinh không tồn tại!",
+        });
       }
-    );
 
-    res.header("Authorization", token);
+      if (!bcrypt.compareSync(fields.password[0], student.password)) {
+        return res.status(400).json({
+          message: "Thư hoặc mât khẩu không chính xác!",
+        });
+      }
 
-    res.status(200).json({
-      success: true,
-      message: "Đăng nhập thành công!",
-      user: {
-        id: student._id,
-        school_id: req.user.school_id,
-        name: student.name,
-        role: "STUDENT",
-      },
+      const jwtSecret = process.env.SECRET_KEY;
+      const token = jwt.sign(
+        {
+          id: student._id,
+          school_id: student.school,
+          role: "STUDENT",
+          name: student.name,
+        },
+        jwtSecret,
+        {
+          expiresIn: "1d",
+        }
+      );
+
+      res.header("Authorization", token);
+
+      res.status(200).json({
+        success: true,
+        message: "Đăng nhập thành công!",
+        user: {
+          id: student._id,
+          name: student.name,
+          role: "STUDENT",
+        },
+      });
     });
   } catch (error) {
     res.status(500).json({

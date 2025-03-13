@@ -106,7 +106,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1>Dashboard</h1>
       {edit && (
         <>
           <Typography variant="h4" align="center" marginTop={"20px"}>

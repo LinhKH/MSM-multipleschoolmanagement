@@ -96,6 +96,17 @@ const Notice = () => {
     }
   };
 
+  const fetchNoticesByAudience = async (audience) => {
+    try {
+      const { data } = await axios.post(`${backendUrl}/notice/audience`, { audience });
+      if (data.success) {
+        setNotices(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const [confirm, setConfirm] = useState(false);
   const editNotice = (id) => {
     setNoticeId(id);
@@ -226,6 +237,37 @@ const Notice = () => {
             </Button>
           </Box>
         </Box>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          height: "auto",
+          borderRadius: 1,
+          border: 1,
+          justifyItems: "center",
+          p: 2,
+          mt: 2,
+        }}
+      >
+        <Typography variant="h5" sx={{ textAlign: "center" }}>
+          Tìm kiếm thông báo
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ m: 1 }}
+          onClick={() => fetchNoticesByAudience('student')}
+        >
+          Học sinh
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ m: 1 }}
+          onClick={() => fetchNoticesByAudience('teacher')}
+        >
+          Giáo viên
+        </Button>
       </Box>
       <Box
         sx={{

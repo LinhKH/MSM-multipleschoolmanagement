@@ -1,5 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
 
 import loginSchema from "../../../yupSchema/loginSchema";
@@ -21,26 +31,35 @@ const Login = () => {
   };
 
   const initialValues = {
-    email: "mr.linh1090@gmail.com",
-    password: "password",
+    email: "mr.linh1090@gmail.com" || "",
+    password: "password" || "",
+    login_type: "",
   };
 
-  const Formik = useFormik({
+  const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
     onSubmit: async (values) => {
+      let typeUrl = ``;
+      if (values.login_type === "teacher") {
+        typeUrl = `${backendUrl}/teacher/login`;
+      } else if (values.login_type === "student") {
+        typeUrl = `${backendUrl}/student/login`;
+      } else{
+        typeUrl = `${backendUrl}/school/login`;
+      }
       const formData = new FormData();
       Object.keys(values).forEach((key) => {
         formData.append(key, values[key]);
       });
       try {
         const response = await axios.post(
-          `${backendUrl}/school/login`,
+          typeUrl,
           formData
         );
 
-        console.log(response.headers['authorization']); // undefined if not set in exposedHeaders: "Authorization" of cors server.js,
-        const token = response.headers['authorization'];
+        console.log(response.headers["authorization"]); // undefined if not set in exposedHeaders: "Authorization" of cors server.js,
+        const token = response.headers["authorization"];
         if (token) {
           localStorage.setItem("token", token);
         }
@@ -48,12 +67,12 @@ const Login = () => {
         if (user) {
           localStorage.setItem("user", JSON.stringify(user));
         }
-        Formik.resetForm();
+        formik.resetForm();
 
         setMessage(response.data.message);
         setMode("success");
         await login(user);
-        await navigate("/school");
+        await navigate(`/${values.login_type}`);
       } catch (error) {
         console.log(error);
         setMessage(error.response.data.message);
@@ -72,7 +91,7 @@ const Login = () => {
         />
       )}
       <Typography variant="h4" align="center" marginTop={"20px"}>
-        Đăng nhập trường học
+        Đăng nhập
       </Typography>
       <Box
         component="form"
@@ -85,31 +104,53 @@ const Login = () => {
         }}
         noValidate
         autoComplete="off"
-        onSubmit={Formik.handleSubmit}
+        onSubmit={formik.handleSubmit}
       >
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Đối tượng</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={formik.values.login_type}
+            name="login_type"
+            label="Đối tượng"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.login_type && Boolean(formik.errors.login_type)
+            }
+          >
+            <MenuItem value={"school"}>Trường</MenuItem>
+            <MenuItem value={"teacher"}>Giáo viên</MenuItem>
+            <MenuItem value={"student"}>Học sinh</MenuItem>
+          </Select>
+          {formik.touched.login_type && formik.errors.login_type && (
+            <FormHelperText sx={{ color:"#d32f2f" }}>{formik.errors.login_type}</FormHelperText>
+          )}
+        </FormControl>
         <TextField
           id="outlined-basic"
           name="email"
           label="Thư điện tử"
           variant="outlined"
-          value={Formik.values.email}
-          onChange={Formik.handleChange}
-          onBlur={Formik.handleBlur}
-          error={Formik.touched.email && Boolean(Formik.errors.email)}
-          helperText={Formik.touched.email && Formik.errors.email}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
         />
-        
+
         <TextField
           id="outlined-basic"
           name="password"
           type="password"
           label="Mật khẩu"
           variant="outlined"
-          value={Formik.values.password}
-          onChange={Formik.handleChange}
-          onBlur={Formik.handleBlur}
-          error={Formik.touched.password && Boolean(Formik.errors.password)}
-          helperText={Formik.touched.password && Formik.errors.password}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
         />
 
         <Button type="submit" variant="contained">

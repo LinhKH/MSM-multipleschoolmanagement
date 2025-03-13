@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/create", authMiddleware(["SCHOOL"]), newNotice);
 router.get("/all", authMiddleware(["SCHOOL"]), getAllNotices);
-router.get(
+router.post(
   "/audience",
   authMiddleware(["SCHOOL", "STUDENT", "TEACHER"]),
   getNoticenByAudience

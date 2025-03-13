@@ -53,6 +53,7 @@ export const getNoticenByAudience = async (req, res) => {
   try {
     const schoolId = req.user.school_id;
 
+    console.log(req.body);
     const { audience } = req.body;
 
     const notice = await Notice.find({

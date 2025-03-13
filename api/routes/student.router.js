@@ -14,7 +14,7 @@ import {
 import { authMiddleware } from "../auth/auth.js";
 const router = express.Router();
 
-router.post("/login", authMiddleware(["STUDENT", "SCHOOL"]), loginStudent);
+router.post("/login", loginStudent);
 router.post("/create", authMiddleware(["STUDENT", "SCHOOL"]), createStudent);
 router.get("/fetch/:id", authMiddleware(["STUDENT", "SCHOOL"]), getStudentById);
 router.get("/fetch-single", authMiddleware(["STUDENT", "SCHOOL"]), getStudentOwnData);
