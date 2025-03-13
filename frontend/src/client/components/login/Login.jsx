@@ -6,12 +6,15 @@ import loginSchema from "../../../yupSchema/loginSchema";
 import axios from "axios";
 import MessageSnackbar from "../../../basic_utility_components/snackbar/MessageSnackbar";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Login = () => {
   const [message, setMessage] = useState("");
   const [mode, setMode] = useState("");
   const navigate = useNavigate();
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  const { login } = useContext(AuthContext);
 
   const handleClose = () => {
     setMessage(null);
@@ -36,8 +39,8 @@ const Login = () => {
           formData
         );
 
-        console.log(response.headers.get("Authorization")); // undefined if not set in exposedHeaders: "Authorization" of cors server.js,
-        const token = response.headers.get("Authorization");
+        console.log(response.headers['authorization']); // undefined if not set in exposedHeaders: "Authorization" of cors server.js,
+        const token = response.headers['authorization'];
         if (token) {
           localStorage.setItem("token", token);
         }
@@ -49,7 +52,8 @@ const Login = () => {
 
         setMessage(response.data.message);
         setMode("success");
-        navigate("/school");
+        await login(user);
+        await navigate("/school");
       } catch (error) {
         console.log(error);
         setMessage(error.response.data.message);

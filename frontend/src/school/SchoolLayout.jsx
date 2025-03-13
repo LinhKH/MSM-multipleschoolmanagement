@@ -342,7 +342,7 @@ export default function SchoolLayout() {
                     justifyContent: "center",
                   },
             ]}
-            onClick={() => navigate("/school/login")}
+            onClick={() => navigate("/logout")}
           >
             <ListItemIcon
               sx={[

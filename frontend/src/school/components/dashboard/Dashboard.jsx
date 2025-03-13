@@ -27,7 +27,7 @@ const Dashboard = () => {
   const fetchSchools = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/school/fetch-single`);
-      console.log(data);
+
       if (data.success) {
         setSchool(data.school);
       }

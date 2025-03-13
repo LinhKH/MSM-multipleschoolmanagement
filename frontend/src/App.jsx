@@ -34,6 +34,7 @@ import ClientLayout from "./client/ClientLayout";
 import Home from "./client/components/home/Home";
 import Login from "./client/components/login/Login";
 import Register from "./client/components/register/Register";
+import Logout from "./client/components/logout/Logout";
 import ProtectedRoute from "./guard/ProtectedRoute";
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
         <Routes>
           {/* School route */}
           <Route
-            path="school"
+            path="/school"
             element={
               <ProtectedRoute allowedRoles={["SCHOOL"]}>
                 <SchoolLayout />
@@ -97,6 +98,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="logout" element={<Logout />} />
           </Route>
         </Routes>
       </BrowserRouter>
