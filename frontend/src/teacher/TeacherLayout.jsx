@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -117,6 +117,7 @@ export default function TeacherLayout() {
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const location = useLocation();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -196,7 +197,15 @@ export default function TeacherLayout() {
         <Divider />
         <List>
           {navArr.map((text, index) => (
-            <ListItem key={index} disablePadding sx={{ display: "block" }}>
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{
+                display: "block",
+                backgroundColor:
+                  location.pathname === text.link ? "#1976d2" : "inherit",
+              }}
+            >
               <ListItemButton
                 sx={[
                   {

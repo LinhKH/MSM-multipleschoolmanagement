@@ -54,9 +54,9 @@ const NoticeTeacher = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Tiêu đề</TableCell>
-                <TableCell>Nội dung</TableCell>
-                <TableCell align="right">Thông báo đến</TableCell>
+                <TableCell><b>Tiêu đề</b></TableCell>
+                <TableCell><b>Nội dung</b></TableCell>
+                <TableCell align="right"><b>Thông báo đến</b></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

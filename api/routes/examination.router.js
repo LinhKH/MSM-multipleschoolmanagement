@@ -11,10 +11,10 @@ import {
 import { authMiddleware } from "../auth/auth.js";
 const router = express.Router();
 
-router.post("/create", authMiddleware(["SCHOOL"]), newExamination);
-router.get("/all", authMiddleware(["SCHOOL"]), getAllExaminations);
+router.post("/create", authMiddleware(["SCHOOL", "TEACHER"]), newExamination);
+router.get("/all", authMiddleware(["SCHOOL", "TEACHER"]), getAllExaminations);
 router.get("/class/:classId", authMiddleware(["SCHOOL","STUDENT","TEACHER"]), getExaminationByClass);
-router.patch("/update/:examinationId", authMiddleware(["SCHOOL"]), updateExamination);
-router.delete("/delete/:examinationId", authMiddleware(["SCHOOL"]), deleteExamination);
+router.patch("/update/:examinationId", authMiddleware(["SCHOOL", "TEACHER"]), updateExamination);
+router.delete("/delete/:examinationId", authMiddleware(["SCHOOL", "TEACHER"]), deleteExamination);
 
 export default router;

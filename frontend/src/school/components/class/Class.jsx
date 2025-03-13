@@ -214,17 +214,20 @@ const Class = () => {
                   Lớp: {card.class_text} [ {card.class_num} ]
                 </Typography>
                 <Typography variant="body2">
-                  Giáo viên chủ nhiệm: {card?.attendee}
+                  <b>Giáo viên chủ nhiệm:</b>
+                </Typography>
+                <Typography variant="body2">
+                  <i>{card?.attendee?.name}</i>
                 </Typography>
               </CardContent>
               <CardActions sx={{ justifyContent: "center" }}>
-                <Button size="small" onClick={() => handleEdit(card)}>
+                <Button size="small" variant="outlined" onClick={() => handleEdit(card)}>
                   <ModeEditOutlineIcon />
                 </Button>
                 <Button
-                  size="small"
+                  size="small" variant="outlined"
                   onClick={() => handleClickOpen(card._id)}
-                  sx={{ color: "red" }}
+                  sx={{ color: "tomato" }}
                 >
                   <DeleteIcon />
                 </Button>

@@ -35,7 +35,6 @@ const Attendee = ({ classId }) => {
     try {
       const { data } = await axios.get(`${backendUrl}/class/single/${classId}`);
       if (data.success) {
-        console.log(data);
         setAttendance(data.data.attendee || null);
       }
     } catch (error) {
