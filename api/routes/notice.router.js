@@ -12,7 +12,7 @@ import { authMiddleware } from "../auth/auth.js";
 const router = express.Router();
 
 router.post("/create", authMiddleware(["SCHOOL"]), newNotice);
-router.get("/all", authMiddleware(["SCHOOL"]), getAllNotices);
+router.get("/all", authMiddleware(["SCHOOL","TEACHER"]), getAllNotices);
 router.post(
   "/audience",
   authMiddleware(["SCHOOL", "STUDENT", "TEACHER"]),
