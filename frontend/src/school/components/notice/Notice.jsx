@@ -256,6 +256,14 @@ const Notice = () => {
           variant="contained"
           color="primary"
           sx={{ m: 1 }}
+          onClick={() => fetchNotices()}
+        >
+          Tất cả
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ m: 1 }}
           onClick={() => fetchNoticesByAudience('student')}
         >
           Học sinh
