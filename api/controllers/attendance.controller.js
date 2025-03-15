@@ -6,14 +6,33 @@ export const markAttendance = async (req, res) => {
     const { student: studentId, class: classId, date, status } = req.body;
     const schoolId = req.user.school_id;
 
+    // implement insert or update
+    const existingAttendance = await Attendance.findOne({
+      school: schoolId,
+      student: studentId,
+      class: classId,
+      date : moment(date).format("YYYY-MM-DD"),
+    });
+
+    if (existingAttendance) {
+      const updatedAttendance = await Attendance.findByIdAndUpdate(
+        existingAttendance._id,
+        { status },
+        { new: true }
+      );
+      return res.status(200).json({
+        success: true,
+        message: "Điểm danh đã được cập nhật thành công",
+        data: updatedAttendance,
+      });
+    }
     const attendance = new Attendance({
       school: schoolId,
       student: studentId,
       class: classId,
-      date,
+      date: moment(date).format("YYYY-MM-DD"),
       status,
     });
-
     const newAttendance = await attendance.save();
     res.status(201).json({
       success: true,
@@ -37,6 +56,32 @@ export const getAttendanceByStudent = async (req, res) => {
     const attendances = await Attendance.find({
       school: schoolId,
       student: studentId,
+    })
+      .populate("student")
+      .populate("class");
+    res.status(200).json({
+      success: true,
+      message: "Get all attendances successfully!",
+      data: attendances,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Get all attendances failed!",
+      error: error.message,
+    });
+  }
+
+};
+export const getAttendanceByClass = async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const schoolId = req.user.school_id;
+
+    const attendances = await Attendance.find({
+      school: schoolId,
+      class: classId,
+      date: moment().format("YYYY-MM-DD"),
     })
       .populate("student")
       .populate("class");

@@ -93,6 +93,16 @@ const Login = () => {
       <Typography variant="h4" align="center" marginTop={"20px"}>
         Đăng nhập
       </Typography>
+      <Typography variant="body1" align="center" marginTop={"20px"}>
+        Tài khoản Trường    : mr.linh1090@gmail.com
+      </Typography>
+      <Typography variant="body1" align="center" marginTop={"20px"}>
+        Tài khoản Giáo viên : linhkhpk00213@gmail.com
+      </Typography>
+      <Typography variant="body1" align="center" marginTop={"20px"}>
+        Tài khoản Học sinh  : fijovizih@mailinator.com
+      </Typography>
+
       <Box
         component="form"
         sx={{

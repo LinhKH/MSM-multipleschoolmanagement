@@ -14,6 +14,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid2";
 
+import moment from "moment";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
   ...theme.typography.body2,
@@ -82,23 +84,23 @@ const AttendanceDetail = () => {
           <Grid size={6}>
             <Item>
               <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="right">Date</TableCell>
-                      <TableCell align="right">Status</TableCell>
+                      <TableCell align="left"><b>Date</b></TableCell>
+                      <TableCell align="right"><b>Status</b></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {attendanceData &&
                       attendanceData.map((row) => (
                         <TableRow
-                          key={row.name}
+                          key={row._id}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
-                          <TableCell align="right">{row.date}</TableCell>
+                          <TableCell align="left">{moment(row.date).format('YYYY-MM-DD')}</TableCell>
                           <TableCell align="right">{row.status}</TableCell>
                         </TableRow>
                       ))}

@@ -22,6 +22,15 @@ export const getSingleClass = async (req, res) => {
   }
 };
 
+export const getAttendeeClass = async (req, res) => {
+  try {
+    const attendee = await Class.find({ school: req.user.school_id, attendee: req.user.id }).populate("attendee");
+    res.status(200).json({ success: true, data: attendee });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Lỗi khi lấy lớp giáo viên chủ nhiệm lớp" });
+  }
+};
+
 export const createClass = async (req, res) => {
   try {
     const { class_text, class_num, attendee } = req.body;

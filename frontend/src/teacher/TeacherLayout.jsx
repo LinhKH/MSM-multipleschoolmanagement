@@ -33,6 +33,9 @@ import ExplicitIcon from "@mui/icons-material/Explicit";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { AuthContext } from "../context/AuthContext";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -116,8 +119,11 @@ const Drawer = styled(MuiDrawer, {
 export default function TeacherLayout() {
   const navigate = useNavigate();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [open, setOpen] = React.useState(!isMobile);
   const location = useLocation();
+
+  const { user } = React.useContext(AuthContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -159,6 +165,21 @@ export default function TeacherLayout() {
       icon: NotificationsIcon,
     },
   ];
+  React.useEffect(() => {
+      const handleResize = () => {
+        if (window.innerWidth <= theme.breakpoints.values.sm) {
+          setOpen(false);
+        } else {
+          setOpen(true);
+        }
+      };
+  
+      window.addEventListener("resize", handleResize);
+  
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, [theme.breakpoints.values.sm]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -179,9 +200,31 @@ export default function TeacherLayout() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            School Management System [ Multiple ]
-          </Typography>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: isMobile ? "column" : "",
+              width: "100%",
+            }}
+          >
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ fontSize: isMobile ? "1rem" : "1.25rem" }}
+            >
+              School Management System [ Multiple ]
+            </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ fontSize: isMobile ? "1rem" : "1.25rem" }}
+            >
+              {user.name} | Role: {user.role}
+            </Typography>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

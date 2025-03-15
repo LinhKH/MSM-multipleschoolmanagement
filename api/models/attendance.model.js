@@ -29,9 +29,8 @@ const attendanceSchema = new mongoose.Schema(
     
     status: {
       type: String,
-      enum: ["Present", "Absent"],  // co mat, vang mat
-      default: "Present",
-      required: true,
+      enum: ["present", "absent"],  // co mat, vang mat
+      // required: true,
     },
   },
   { timestamps: true }
