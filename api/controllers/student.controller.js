@@ -146,7 +146,7 @@ export const loginStudent = async (req, res) => {
     const form = formidable({});
     form.keepExtensions = true;
     form.parse(req, async (err, fields, files) => {
-      const student = await Student.findOne({ email: fields.email[0] });
+      const student = await Student.findOne({ email: fields.email[0] }).populate('student_class');
       if (!student) {
         return res.status(400).json({
           message: "Học sinh không tồn tại!",
@@ -182,6 +182,8 @@ export const loginStudent = async (req, res) => {
           id: student._id,
           name: student.name,
           role: "STUDENT",
+          classId: student?.student_class?._id,
+          className: student?.student_class?.class_text,
         },
       });
     });
