@@ -20,9 +20,13 @@ const pages = [
 ];
 
 import { AuthContext } from "../../../context/AuthContext";
+import { useTheme } from "../../../context/ThemeContext";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 function Navbar() {
   const { authenticated, user } = useContext(AuthContext);
+  const { mode, toggleTheme } = useTheme();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -198,6 +202,9 @@ function Navbar() {
               </Menu>
             </Box>
           )}
+           <IconButton sx={{ ml: 1 }} onClick={toggleTheme} color="inherit">
+            {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
         </Toolbar>
       </Container>
     </AppBar>

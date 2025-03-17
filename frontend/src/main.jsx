@@ -4,6 +4,7 @@ import './index.css';
 import App from './App.jsx';
 import axios from 'axios';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { ThemeProvider } from "./context/ThemeContext.jsx";
 
 axios.interceptors.request.use(
   (config) => {
@@ -20,8 +21,10 @@ axios.interceptors.request.use(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>,
 )
