@@ -36,6 +36,8 @@ const AttendanceDetail = () => {
   const [present, setPresent] = useState(0);
   const [absent, setAbsent] = useState(0);
 
+  const arrStatus = { present: "Có mặt", absent: "Vắng mặt" };
+
   const fetchAttendanceByStudent = async () => {
     try {
       const { data } = await axios.get(
@@ -44,9 +46,9 @@ const AttendanceDetail = () => {
       if (data.success) {
         setAttendanceData(data.data);
         if (data.data) {
-          const present = data.data.filter((item) => item.status === "Present")
+          const present = data.data.filter((item) => item.status === "present")
             .length;
-          const absent = data.data.filter((item) => item.status === "Absent")
+          const absent = data.data.filter((item) => item.status === "absent")
             .length;
           setPresent(present);
           setAbsent(absent);
@@ -71,8 +73,8 @@ const AttendanceDetail = () => {
                 series={[
                   {
                     data: [
-                      { id: 0, value: present, label: "Present" },
-                      { id: 1, value: absent, label: "Absent" },
+                      { id: 0, value: present, label: "Có mặt" },
+                      { id: 1, value: absent, label: "Vắng mặt" },
                     ],
                   },
                 ]}
@@ -87,8 +89,8 @@ const AttendanceDetail = () => {
                 <Table aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="left"><b>Date</b></TableCell>
-                      <TableCell align="right"><b>Status</b></TableCell>
+                      <TableCell align="left"><b>Ngày</b></TableCell>
+                      <TableCell align="right"><b>Trạng thái</b></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -101,7 +103,7 @@ const AttendanceDetail = () => {
                           }}
                         >
                           <TableCell align="left">{moment(row.date).format('YYYY-MM-DD')}</TableCell>
-                          <TableCell align="right">{row.status}</TableCell>
+                          <TableCell align="right">{arrStatus[row.status]}</TableCell>
                         </TableRow>
                       ))}
                   </TableBody>
