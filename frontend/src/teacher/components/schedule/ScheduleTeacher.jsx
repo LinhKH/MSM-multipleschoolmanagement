@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -23,7 +23,7 @@ moment.tz.setDefault("Asia/Ho_Chi_Minh");
 const localizer = momentLocalizer(moment);
 
 const ScheduleTeacher = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [eventId, setEventId] = useState("");
 

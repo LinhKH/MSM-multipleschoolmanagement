@@ -1,9 +1,8 @@
-import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { Box, Modal, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Gallery() {
@@ -32,7 +31,7 @@ export default function Gallery() {
     setSelectedImg(null);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchSchools = async () => {
       try {
         const response = await axios.get(

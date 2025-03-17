@@ -1,5 +1,6 @@
-import * as React from "react";
+
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -120,11 +121,11 @@ export default function StudentLayout() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [open, setOpen] = React.useState(!isMobile);
+  const [open, setOpen] = useState(!isMobile);
 
   const location = useLocation();
 
-  const { user } = React.useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -166,7 +167,7 @@ export default function StudentLayout() {
       icon: NotificationsIcon,
     },
   ];
-  React.useEffect(() => {
+  useEffect(() => {
       const handleResize = () => {
         if (window.innerWidth <= theme.breakpoints.values.sm) {
           setOpen(false);

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect, useContext } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -17,16 +17,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
 
 // ICON
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import SubjectIcon from "@mui/icons-material/Subject";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import EventIcon from "@mui/icons-material/Event";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import ExplicitIcon from "@mui/icons-material/Explicit";
@@ -120,10 +114,10 @@ export default function TeacherLayout() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [open, setOpen] = React.useState(!isMobile);
+  const [open, setOpen] = useState(!isMobile);
   const location = useLocation();
 
-  const { user } = React.useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -165,21 +159,21 @@ export default function TeacherLayout() {
       icon: NotificationsIcon,
     },
   ];
-  React.useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth <= theme.breakpoints.values.sm) {
-          setOpen(false);
-        } else {
-          setOpen(true);
-        }
-      };
-  
-      window.addEventListener("resize", handleResize);
-  
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }, [theme.breakpoints.values.sm]);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= theme.breakpoints.values.sm) {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [theme.breakpoints.values.sm]);
 
   return (
     <Box sx={{ display: "flex" }}>

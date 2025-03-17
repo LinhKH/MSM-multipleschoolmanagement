@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
-import React, { useContext, useState } from "react";
-import { useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import moment from "moment";
 
 import Table from "@mui/material/Table";
@@ -117,12 +116,12 @@ const AttendanceStudent = () => {
                 >
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 450 }} aria-label="simple table">
-                      <TableHead>
+                      <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
                         <TableRow>
-                          <TableCell align="left">
+                          <TableCell sx={{ fontWeight: "bold" }} align="left">
                             <b>Ngày</b>
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell sx={{ fontWeight: "bold" }} align="right">
                             <b>Điểm danh</b>
                           </TableCell>
                         </TableRow>

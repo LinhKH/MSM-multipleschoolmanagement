@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -15,9 +15,8 @@ moment.tz.setDefault("Asia/Ho_Chi_Minh");
 const localizer = momentLocalizer(moment);
 
 const ScheduleStudent = () => {
-  const { user } = useContext(AuthContext);
-
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { user } = useContext(AuthContext);
 
   const [classId, setClassId] = useState("");
   const [events, setEvents] = useState([]);
@@ -45,7 +44,7 @@ const ScheduleStudent = () => {
   };
 
   const [date, setDate] = useState(new Date(moment()));
-  const [view, setView] = useState(ScheduleStudent.WEEK);
+  const [view, setView] = useState("week");
 
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
   const onView = useCallback((newView) => setView(newView), [setView]);
@@ -58,7 +57,7 @@ const ScheduleStudent = () => {
 
   useEffect(() => {
     setClassId(user.classId);
-  }, []);
+  }, [user.classId]);
 
   return (
     <>

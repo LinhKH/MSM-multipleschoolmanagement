@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect, useContext } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -33,7 +33,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 import { AuthContext } from "../context/AuthContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect } from "react";
 
 const drawerWidth = 240;
 
@@ -119,10 +118,10 @@ export default function SchoolLayout() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [open, setOpen] = React.useState(!isMobile);
+  const [open, setOpen] = useState(!isMobile);
   const location = useLocation();
 
-  const { user } = React.useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);

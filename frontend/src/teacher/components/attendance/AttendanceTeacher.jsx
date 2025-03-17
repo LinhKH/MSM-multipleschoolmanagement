@@ -8,8 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
@@ -83,7 +82,6 @@ const AttendanceTeacher = () => {
         params: { student_class: selectedClass },
       });
       if (data.success) {
-        console.log(data.data);
         setStudents(data.data);
       }
     } catch (error) {
@@ -239,7 +237,9 @@ const AttendanceTeacher = () => {
                       </TableCell>
                       <TableCell align="right">
                         <span
-                          style={{ color: attendaceStatus[row._id] ? "green" : "red" }}
+                          style={{
+                            color: attendaceStatus[row._id] ? "green" : "red",
+                          }}
                         >
                           {attendaceStatus[row._id]
                             ? "Đã điểm danh"

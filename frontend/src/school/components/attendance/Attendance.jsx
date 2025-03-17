@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -19,7 +20,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import Attendee from "./Attendee";
 import { Link } from "react-router-dom";
 
