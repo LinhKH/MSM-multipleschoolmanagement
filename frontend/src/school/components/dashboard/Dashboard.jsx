@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import registerSchema from "../../../yupSchema/registerSchema";
 
 import MessageSnackbar from "../../../basic_utility_components/snackbar/MessageSnackbar";
+import EnrollmentChart from "./EnrollmentChart";
 
 const Dashboard = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -47,9 +48,7 @@ const Dashboard = () => {
   const formik = useFormik({
     initialValues,
     validationSchema: registerSchema,
-    onSubmit: async (values) => {
-      
-    },
+    onSubmit: async (values) => {},
   });
 
   const fileInputRef = useRef(null);
@@ -91,7 +90,6 @@ const Dashboard = () => {
         setMessage(data.message);
         setMode("success");
       }
-
     } catch (error) {
       console.log(error);
       setMessage(error.response.data.message);
@@ -100,8 +98,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchSchools();
-  }, []);
+    const fetchData = async () => {
+      await fetchSchools();
+    };
+    fetchData();
+  }, [backendUrl]);
 
   return (
     <>
@@ -154,14 +155,15 @@ const Dashboard = () => {
               </p>
             ) : null}
 
-            <Box sx={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "center", gap: "20px" }}
+            >
               <Button onClick={handleSubmition} variant="contained">
                 Cập nhật
               </Button>
               <Button variant="outlined" onClick={cancelEdit}>
                 Hủy
               </Button>
-
             </Box>
           </Box>
         </>
@@ -180,6 +182,7 @@ const Dashboard = () => {
           </Button>
         </Box>
       )}
+      <EnrollmentChart />
 
       {message && (
         <MessageSnackbar

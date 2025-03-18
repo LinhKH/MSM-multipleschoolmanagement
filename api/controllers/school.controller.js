@@ -4,6 +4,10 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Student from "../models/student.model.js";
+import Teacher from "../models/teacher.model.js";
+import Subject from "../models/subject.model.js";
+import Attendance from "../models/attendance.model.js";
 
 export const registerSchool = (req, res) => {
   try {
@@ -155,6 +159,43 @@ export const getSchoolById = async (req, res) => {
       success: false,
       message: "Get school by id failed!",
     });
+  }
+};
+export const getSchoolDashboardOverview = async (req, res) => {
+  try {
+    const totalStudents = await Student.countDocuments();
+    const totalTeachers = await Teacher.countDocuments();
+    const totalCourses = await Subject.countDocuments();
+
+    res
+      .status(200)
+      .json({ success: true, totalStudents, totalTeachers, totalCourses });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+export const enrollmentStats = async (req, res) => {
+  try {
+    const stats = await Student.aggregate([
+      { $group: { _id: { $month: "$createdAt" }, count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]);
+
+    res.status(200).json({ success: true, data: stats });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+export const attendanceStats = async (req, res) => {
+  try {
+    const stats = await Attendance.aggregate([
+      { $group: { _id: "$date", present: { $sum: 1 } } },
+      { $sort: { _id: -1 } },
+    ]);
+
+    res.status(200).json({ success: true, stats });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server" });
   }
 };
 
