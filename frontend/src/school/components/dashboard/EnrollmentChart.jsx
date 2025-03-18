@@ -49,8 +49,11 @@ const EnrollmentChart = () => {
   };
 
   useEffect(() => {
-    fetchEnrollmentStats();
-    fetchDashboardOverview();
+    const fetchData = async () => {
+      await fetchEnrollmentStats();
+      await fetchDashboardOverview();
+    };
+    fetchData();
   }, []);
 
   return (
