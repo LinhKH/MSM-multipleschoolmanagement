@@ -18,6 +18,8 @@ import axios from "axios";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DialogConfirm from "../../../basic_utility_components/model_confirm/DialogConfirm";
+import ReactPaginate from "react-paginate";
+import "./pagination.css"; // Import the CSS file
 
 const Class = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -25,6 +27,11 @@ const Class = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [editId, setEditId] = useState(null);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4;
 
   const initialValues = {
     class_text: "",
@@ -82,6 +89,7 @@ const Class = () => {
 
   const handleEdit = async (classItem) => {
     setIsEdit(true);
+    setEditId(classItem._id);
     formik.setValues({
       class_text: classItem.class_text,
       class_num: classItem.class_num,
@@ -131,6 +139,14 @@ const Class = () => {
     fetchClasses();
   }, []);
 
+  // Pagination logic
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
+  };
+  const offset = currentPage * itemsPerPage;
+  const currentItems = classes.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(classes.length / itemsPerPage);
+
   return (
     <>
       <Typography variant="h4" align="center" marginTop={"20px"}>
@@ -164,7 +180,7 @@ const Class = () => {
         <TextField
           id="outlined-basic"
           name="class_num"
-          type="number"
+          type="text"
           label="Số lớp"
           variant="outlined"
           value={formik.values.class_num}
@@ -205,8 +221,8 @@ const Class = () => {
           gap: 2,
         }}
       >
-        {classes &&
-          classes.map((card, index) => (
+        {currentItems &&
+          currentItems.map((card, index) => (
             <Card variant="outlined" key={index}>
               <CardContent>
                 <Typography variant="h5" component="div">
@@ -233,6 +249,25 @@ const Class = () => {
               </CardActions>
             </Card>
           ))}
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: "20px", cursor: "pointer" }}>
+        <Typography variant="body1" sx={{ marginRight: "10px" }}>
+          Showing {offset + 1} to {offset + currentItems.length} of {classes.length}
+        </Typography>
+        <ReactPaginate
+          previousLabel={"previous"}
+          nextLabel={"next"}
+          breakLabel={"..."}
+          breakClassName={"break-me"}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
+        />
+
       </Box>
       {open && (
         <DialogConfirm open={open} handleClose={handleClose} handleConfirmDelete={handleConfirmDelete} whatDelete='lớp học' /> 
