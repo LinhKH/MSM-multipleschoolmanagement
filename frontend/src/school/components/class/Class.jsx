@@ -19,7 +19,6 @@ import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DialogConfirm from "../../../basic_utility_components/model_confirm/DialogConfirm";
 import ReactPaginate from "react-paginate";
-import "./pagination.css"; // Import the CSS file
 
 const Class = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -31,7 +30,7 @@ const Class = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 4;
+  const itemsPerPage = 20;
 
   const initialValues = {
     class_text: "",
